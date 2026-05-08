@@ -34,9 +34,9 @@ For each topic provided, search for the 2-3 most recent relevant news articles.
 Return a well-formatted HTML email digest with:
 - A <h2> title: "DOE Funding Tracker — [today's date]"
 - A brief intro: "This biweekly digest tracks federal education funding developments."
-- For each topic: a <h3> section header, then for each article: a linked headline, 2-3 sentence plain-language summary, and source name + date
+- For each topic: a <h3> section header, then for each article: a linked headline (hyperlinked to the full article URL), a 2-3 sentence plain-language summary, and a "Source:" line with the publication name, author if available, date, and the full URL as a clickable link
 - A closing line: "This digest is generated automatically for policy monitoring by SDEEC (sdeducationequity.org)."
-Be factual, neutral, and clear. Return ONLY the HTML with no preamble or markdown fences.`,
+Be factual, neutral, and clear. Always include the full source URL for every article. Return ONLY the HTML with no preamble or markdown fences.`,
       messages: [{ role: 'user', content: `Search for recent news on each topic:\n${topicList}` }],
     }),
   });
@@ -68,12 +68,12 @@ async function sendEmail(html) {
 
   await transporter.sendMail({
     from: `"SDEEC DOE Tracker" <${process.env.GMAIL_USER}>`,
-    to: process.env.RECIPIENT_EMAIL,
+    to: process.env.RECIPIENT_EMAILS,
     subject: `DOE Funding Tracker — ${date}`,
     html,
   });
 
-  console.log(`✅ Digest sent to ${process.env.RECIPIENT_EMAIL}`);
+  console.log(`✅ Digest sent to ${process.env.RECIPIENT_EMAILS}`);
 }
 
 (async () => {
