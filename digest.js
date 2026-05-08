@@ -1,4 +1,4 @@
-// digest.js — DOE Funding Tracker
+// digest.js — DOE Funding Tracker (updated)
 // Searches for recent news and emails a digest via Gmail
 // Runs automatically via GitHub Actions every two weeks
 
@@ -26,7 +26,7 @@ async function getDigest() {
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 4000,
       tools: [{ type: 'web_search_20250305', name: 'web_search' }],
       system: `You are a policy research assistant tracking federal education funding changes under the Trump administration.
