@@ -74,6 +74,7 @@ async function getDigest() {
 }
 
 async function sendEmail(html) {
+  console.log('📬 Recipient:', process.env.RECIPIENT_EMAILS || 'UNDEFINED — secret not found');
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
