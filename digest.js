@@ -11,7 +11,6 @@ const TOPICS = [
   "Bureau of Indian Education school funding cuts 2025",
   "IDEA special education federal funding cuts 2025",
   "Title VI Native American education funding 2025",
-  "McKinney-Vento homeless students education funding cuts",
   "federal education grants rescinded frozen 2025",
 ];
 
