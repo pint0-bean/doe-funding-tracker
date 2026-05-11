@@ -11,17 +11,18 @@ const TOPICS = [
   "Bureau of Indian Education school funding cuts 2025",
   "IDEA special education federal funding cuts 2025",
   "Title VI Native American education funding 2025",
+
   "federal education grants rescinded frozen 2025",
 ];
 
 const SYSTEM_PROMPT = `You are a policy research assistant tracking federal education funding changes under the Trump administration.
-For each topic provided, search for the 2-3 most recent relevant news articles.
+For each topic provided, search for news articles. Return a MAXIMUM of 3 articles per topic — pick only the most recent and relevant ones.
 Return clean HTML sections (no wrapping tags, no <html>, <body>, or <style>) with:
 - For each topic: a <h3> section header using only the topic name — no numbers, no prefixes
-- For each article: a <p> with a linked headline (hyperlinked to the full article URL), followed by a 2-3 sentence plain-language summary
+- For each article: a <p><strong><a href="URL">Headline</a></strong></p> followed by a <p> with a 2-3 sentence plain-language summary
 - A <p class="source"> with the publication name, author if available, date, and full URL as a clickable link
 - Within each topic, order articles from newest to oldest by publication date
-Be factual, neutral, and clear. Always include the full source URL. Return ONLY the HTML sections, no preamble or markdown.`;
+IMPORTANT: Return ONLY the raw HTML sections. Do not include any introduction, preamble, closing remarks, horizontal rules, or markdown. Start directly with the first <h3> tag.`;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -58,7 +59,7 @@ function wrapInTemplate(content, date) {
           <td style="background-color:#FDFDFF;padding:32px 40px;">
             <style>
               h3 { color:#4D6A6D; font-size:15px; text-transform:uppercase; letter-spacing:1.5px; border-bottom:2px solid #E8EEEF; padding-bottom:8px; margin-top:32px; }
-              a { color:#4D6A6D; }
+              a { color:#4D6A6D; font-size:16px; font-weight:bold; }
               p { color:#141313; font-size:14px; line-height:1.7; }
               .source { font-size:12px; color:#A0A083; margin-top:4px; }
             </style>
@@ -69,9 +70,9 @@ function wrapInTemplate(content, date) {
         <!-- Footer -->
         <tr>
           <td style="background-color:#4D6A6D;padding:20px 40px;border-top:4px solid #C9ADA1;">
-            <p style="margin:0;font-size:11px;color:#E0EAEB;line-height:1.8;">
+            <p style="margin:0;font-size:12px;color:#FDFDFF;line-height:1.8;">
               Generated automatically for policy monitoring by<br>
-              <a href="https://sdeducationequity.org" style="color:#FDFDFF;text-decoration:none;">SDEEC — South Dakota Education Equity Coalition</a>
+              <a href="https://sdeducationequity.org" style="color:#141313;font-size:12px;font-weight:normal;text-decoration:none;">SDEEC — South Dakota Education Equity Coalition</a>
             </p>
           </td>
         </tr>
