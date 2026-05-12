@@ -112,21 +112,27 @@ async function searchTopics(topics) {
 }
 
 async function getDigest() {
-  const mid = Math.ceil(TOPICS.length / 2);
-  const batch1 = TOPICS.slice(0, mid);
-  const batch2 = TOPICS.slice(mid);
+  const batch1 = TOPICS.slice(0, 3);
+  const batch2 = TOPICS.slice(3, 5);
+  const batch3 = TOPICS.slice(5);
 
   console.log(`📦 Searching batch 1 (${batch1.length} topics)...`);
   const html1 = await searchTopics(batch1);
 
   console.log('⏳ Waiting between batches...');
-  await delay(65000); // wait 65 seconds to respect rate limit
+  await delay(90000);
 
   console.log(`📦 Searching batch 2 (${batch2.length} topics)...`);
   const html2 = await searchTopics(batch2);
 
+  console.log('⏳ Waiting between batches...');
+  await delay(90000);
+
+  console.log(`📦 Searching batch 3 (${batch3.length} topics)...`);
+  const html3 = await searchTopics(batch3);
+
   const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  return wrapInTemplate(`${html1}${html2}`, date);
+  return wrapInTemplate(`${html1}${html2}${html3}`, date);
 }
 
 async function sendEmail(html) {
