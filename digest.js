@@ -5,18 +5,18 @@
 const nodemailer = require('nodemailer');
 
 const TOPICS = [
-  "Department of Education Trump dismantlement DOGE 2025",
-  "Title I education funding cuts Trump 2025",
-  "Impact Aid federal education funding cuts 2025",
-  "Bureau of Indian Education school funding cuts 2025",
-  "IDEA special education federal funding cuts 2025",
-  "Title VI Native American education funding 2025",
+  "Department of Education Trump dismantlement",
+  "Title I education funding cuts Trump",
+  "Impact Aid federal education funding",
+  "Bureau of Indian Education school funding",
+  "IDEA special education federal funding",
+  "Title VI Native American education funding",
 
-  "federal education grants rescinded frozen 2025",
+  "federal education grants rescinded frozen",
 ];
 
 const SYSTEM_PROMPT = `You are a policy research assistant tracking federal education funding changes under the Trump administration.
-For each topic provided, search for news articles published within the last 20 days only. If fewer than 3 recent articles exist for a topic, only include what is available — do not include older articles to fill the count. Return a MAXIMUM of 3 articles per topic — pick only the most recent and relevant ones.
+For each topic provided, search for news articles published within the last 20 days only. Return a MAXIMUM of 3 articles per topic — pick only the most recent and relevant ones. If fewer than 3 articles return, only include what's available.
 Return clean HTML sections (no wrapping tags, no <html>, <body>, or <style>) with:
 - For each topic: a <h3> section header using only the topic name — no numbers, no prefixes
 - For each article: a <p><strong>Headline (plain text, not a link)</strong></p> followed by a <p> with a 2-3 sentence plain-language summary
