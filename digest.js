@@ -16,10 +16,10 @@ const TOPICS = [
 ];
 
 const SYSTEM_PROMPT = `You are a policy research assistant tracking federal education funding changes under the Trump administration.
-For each topic provided, search for news articles. Return a MAXIMUM of 3 articles per topic — pick only the most recent and relevant ones.
+For each topic provided, search for news articles published within the last 20 days only. If fewer than 3 recent articles exist for a topic, only include what is available — do not include older articles to fill the count. Return a MAXIMUM of 3 articles per topic — pick only the most recent and relevant ones.
 Return clean HTML sections (no wrapping tags, no <html>, <body>, or <style>) with:
 - For each topic: a <h3> section header using only the topic name — no numbers, no prefixes
-- For each article: a <p><strong><a href="URL">Headline</a></strong></p> followed by a <p> with a 2-3 sentence plain-language summary
+- For each article: a <p><strong>Headline (plain text, not a link)</strong></p> followed by a <p> with a 2-3 sentence plain-language summary
 - A <p class="source"> with the publication name, author if available, date, and full URL as a clickable link
 - Within each topic, order articles from newest to oldest by publication date
 IMPORTANT: Return ONLY the raw HTML sections. Do not include any introduction, preamble, closing remarks, horizontal rules, or markdown. Start directly with the first <h3> tag.`;
@@ -59,7 +59,8 @@ function wrapInTemplate(content, date) {
           <td style="background-color:#FDFDFF;padding:32px 40px;">
             <style>
               h3 { color:#4D6A6D; font-size:15px; text-transform:uppercase; letter-spacing:1.5px; border-bottom:2px solid #E8EEEF; padding-bottom:8px; margin-top:32px; }
-              a { color:#4D6A6D; font-size:16px; font-weight:bold; }
+              a { color:#4D6A6D; }
+              p strong { font-size:16px; font-weight:bold; color:#141313; }
               p { color:#141313; font-size:14px; line-height:1.7; }
               .source { font-size:12px; color:#A0A083; margin-top:4px; }
             </style>
