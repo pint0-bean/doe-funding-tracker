@@ -11,15 +11,14 @@ const TOPICS = [
   "Bureau of Indian Education school funding",
   "IDEA special education federal funding",
   "Title VI Native American education funding",
-
   "federal education grants rescinded frozen",
 ];
 
 const SYSTEM_PROMPT = `You are a policy research assistant tracking federal education funding changes under the Trump administration.
-For each topic provided, search for news articles published within the last 20 days only. Return a MAXIMUM of 3 articles per topic — pick only the most recent and relevant ones. If fewer than 3 articles return, only include what's available.
+For each topic provided, search for news articles published within the last 20 days only. Return a MAXIMUM of 2 articles per topic — pick only the most recent and relevant ones. If fewer than 2 articles exist, only include what's available.
 Return clean HTML sections (no wrapping tags, no <html>, <body>, or <style>) with:
 - For each topic: a <h3> section header using only the topic name — no numbers, no prefixes
-- For each article: a <p><strong>Headline (plain text, not a link)</strong></p> followed by a <p> with a 2-3 sentence plain-language summary
+- For each article: a <p><strong>Headline (plain text, not a link)</strong></p> followed by a <p> with a 1-2 sentence plain-language summary
 - A <p class="source"> with the publication name, author if available, date, and full URL as a clickable link
 - Within each topic, order articles from newest to oldest by publication date
 IMPORTANT: Return ONLY the raw HTML sections. Do not include any introduction, preamble, closing remarks, horizontal rules, or markdown. Start directly with the first <h3> tag.`;
@@ -33,7 +32,6 @@ function wrapInTemplate(content, date) {
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
 <body style="margin:0;padding:0;background-color:#FDFDFF;font-family:Georgia,'Times New Roman',serif;">
 
-  <!-- Wrapper -->
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#FDFDFF;">
     <tr><td align="center">
       <table width="100%" cellpadding="0" cellspacing="0" style="max-width:700px;width:100%;">
@@ -137,6 +135,7 @@ async function getDigest() {
 
 async function sendEmail(html) {
   console.log('📬 Recipient:', process.env.RECIPIENT_EMAILS || 'UNDEFINED — secret not found');
+
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
