@@ -6,12 +6,9 @@ const nodemailer = require('nodemailer');
 
 const TOPICS = [
   "Department of Education Trump dismantlement",
-  "Title I education funding cuts Trump",
   "Impact Aid federal education funding",
   "Bureau of Indian Education school funding",
-  "IDEA special education federal funding",
   "Title VI Native American education funding",
-  "federal education grants rescinded frozen",
 ];
 
 const SYSTEM_PROMPT = `You are a policy research assistant tracking federal education funding changes under the Trump administration.
