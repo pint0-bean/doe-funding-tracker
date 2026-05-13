@@ -6,9 +6,12 @@ const nodemailer = require('nodemailer');
 
 const TOPICS = [
   "Department of Education Trump dismantlement",
+  "Title I education funding cuts Trump",
   "Impact Aid federal education funding",
   "Bureau of Indian Education school funding",
+  "IDEA special education federal funding",
   "Title VI Native American education funding",
+  "federal education grants rescinded frozen",
 ];
 
 const SYSTEM_PROMPT = `You are a policy research assistant tracking federal education funding changes under the Trump administration.
@@ -92,7 +95,7 @@ async function searchTopics(topics) {
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 2000,
       tools: [{ type: 'web_search_20250305', name: 'web_search' }],
       system: SYSTEM_PROMPT,
