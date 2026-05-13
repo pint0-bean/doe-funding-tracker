@@ -21,7 +21,7 @@ Return clean HTML sections (no wrapping tags, no <html>, <body>, or <style>) wit
 - For each article: a <p><strong>Headline (plain text, not a link)</strong></p> followed by a <p> with a 1-2 sentence plain-language summary
 - A <p class="source"> with the publication name, author if available, date, and full URL as a clickable link
 - Within each topic, order articles from newest to oldest by publication date
-IMPORTANT: Return ONLY the raw HTML sections. Do not include any introduction, preamble, closing remarks, horizontal rules, or markdown. Start directly with the first <h3> tag.`;
+IMPORTANT: Return ONLY the raw HTML sections. Do not include any first-person narration, reasoning, process descriptions, explanations, introductions, preamble, closing remarks, horizontal rules, or markdown. Do not write sentences like "I'll search for..." or "Based on my results..." or "I was unable to find...". If no articles are found for a topic, skip that topic entirely. Start directly with the first <h3> tag and end with the last </p> tag.`;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -159,6 +159,10 @@ async function sendEmail(html) {
     console.log('📧 Sending email...');
     await sendEmail(html);
   } catch (err) {
+    console.error('❌ Error:', err.message);
+    process.exit(1);
+  }
+})();
     console.error('❌ Error:', err.message);
     process.exit(1);
   }
