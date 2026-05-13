@@ -110,27 +110,21 @@ async function searchTopics(topics) {
 }
 
 async function getDigest() {
-  const batch1 = TOPICS.slice(0, 3);
-  const batch2 = TOPICS.slice(3, 5);
-  const batch3 = TOPICS.slice(5);
+  const results = [];
 
-  console.log(`📦 Searching batch 1 (${batch1.length} topics)...`);
-  const html1 = await searchTopics(batch1);
+  for (let i = 0; i < TOPICS.length; i++) {
+    console.log(`📦 Searching topic ${i + 1}/${TOPICS.length}: ${TOPICS[i]}...`);
+    const html = await searchTopics([TOPICS[i]]);
+    results.push(html);
 
-  console.log('⏳ Waiting between batches...');
-  await delay(90000);
-
-  console.log(`📦 Searching batch 2 (${batch2.length} topics)...`);
-  const html2 = await searchTopics(batch2);
-
-  console.log('⏳ Waiting between batches...');
-  await delay(90000);
-
-  console.log(`📦 Searching batch 3 (${batch3.length} topics)...`);
-  const html3 = await searchTopics(batch3);
+    if (i < TOPICS.length - 1) {
+      console.log('⏳ Waiting before next topic...');
+      await delay(90000);
+    }
+  }
 
   const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  return wrapInTemplate(`${html1}${html2}${html3}`, date);
+  return wrapInTemplate(results.join('\n'), date);
 }
 
 async function sendEmail(html) {
