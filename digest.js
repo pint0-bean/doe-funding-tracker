@@ -163,7 +163,3 @@ async function sendEmail(html) {
     process.exit(1);
   }
 })();
-    console.error('❌ Error:', err.message);
-    process.exit(1);
-  }
-})();
