@@ -17,11 +17,11 @@ const TOPICS = [
 const SYSTEM_PROMPT = `You are a policy research assistant tracking federal education funding changes under the Trump administration.
 For each topic provided, search for news articles published within the last 20 days only. Return a MAXIMUM of 2 articles per topic — pick only the most recent and relevant ones. If fewer than 2 articles exist, only include what's available.
 Return clean HTML sections (no wrapping tags, no <html>, <body>, or <style>) with:
-- For each topic: a <h3> section header using only the topic name — no numbers, no prefixes
+- For each topic: a <h3 style="text-transform:uppercase;"> section header using only the topic name — no numbers, no prefixes
 - For each article: a <p><strong>Headline (plain text, not a link)</strong></p> followed by a <p> with a 1-2 sentence plain-language summary
 - A <p class="source"> with the publication name, author if available, date, and full URL as a clickable link
 - Within each topic, order articles from newest to oldest by publication date
-IMPORTANT: Return ONLY the raw HTML sections. Do not include any first-person narration, reasoning, process descriptions, explanations, introductions, preamble, closing remarks, horizontal rules, or markdown. Do not write sentences like "I'll search for..." or "Based on my results..." or "I was unable to find...". If no articles are found for a topic, skip that topic entirely. Start directly with the first <h3> tag and end with the last </p> tag.`;
+IMPORTANT: Return ONLY the raw HTML sections. Do not include any first-person narration, reasoning, process descriptions, explanations, introductions, preamble, closing remarks, horizontal rules, or markdown. Do not write sentences like "I'll search for..." or "Based on my results..." or "I was unable to find...". If no articles are found for a topic, skip that topic entirely. Start directly with the first <h3> tag and end with the last </p> tag. Use sentence case for all article headlines (capitalize only the first word and proper nouns).`;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -84,6 +84,17 @@ function wrapInTemplate(content, date) {
 </html>`;
 }
 
+function cleanHtml(raw) {
+  // Remove any lines that are plain text narration (not HTML tags)
+  return raw
+    .split('\n')
+    .filter(line => {
+      const trimmed = line.trim();
+      return trimmed === '' || trimmed.startsWith('<');
+    })
+    .join('\n');
+}
+
 async function searchTopics(topics) {
   const topicList = topics.map((kw, i) => `${i + 1}. ${kw}`).join('\n');
 
@@ -106,7 +117,7 @@ async function searchTopics(topics) {
   const data = await response.json();
   if (data.error) throw new Error(`Anthropic API error: ${data.error.message}`);
 
-  return data.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
+  return cleanHtml(data.content.filter(b => b.type === 'text').map(b => b.text).join('\n'));
 }
 
 async function getDigest() {
