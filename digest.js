@@ -21,7 +21,7 @@ Return clean HTML sections (no wrapping tags, no <html>, <body>, or <style>) wit
 - For each article: a <p><strong>Headline (plain text, not a link)</strong></p> followed by a <p> with a 1-2 sentence plain-language summary
 - A <p class="source"> with the publication name, author if available, date, and full URL as a clickable link
 - Within each topic, order articles from newest to oldest by publication date
-IMPORTANT: Return ONLY the raw HTML sections. Do not include any first-person narration, reasoning, process descriptions, explanations, introductions, preamble, closing remarks, horizontal rules, or markdown. Do not write sentences like "I'll search for..." or "Based on my results..." or "I was unable to find...". If no articles are found for a topic, skip that topic entirely. Start directly with the first <h3> tag and end with the last </p> tag. Use sentence case for all article headlines (capitalize only the first word and proper nouns).`;
+IMPORTANT: Return ONLY the raw HTML sections. Do not include any first-person narration, reasoning, process descriptions, explanations, introductions, preamble, closing remarks, horizontal rules, or markdown. Do not write sentences like "I'll search for..." or "Based on my results..." or "I was unable to find...". If no articles are found for a topic within the last 20 days, skip that topic entirely — do NOT substitute with older articles or tangentially related content. Only include articles that are directly relevant to the topic and published within the last 20 days. Start directly with the first <h3> tag and end with the last </p> tag. Use sentence case for all article headlines (capitalize only the first word and proper nouns).`;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -85,12 +85,11 @@ function wrapInTemplate(content, date) {
 }
 
 function cleanHtml(raw) {
-  // Remove any lines that are plain text narration (not HTML tags)
   return raw
     .split('\n')
     .filter(line => {
       const trimmed = line.trim();
-      return trimmed === '' || trimmed.startsWith('<');
+      return trimmed === '' || /<[a-zA-Z]/.test(trimmed);
     })
     .join('\n');
 }
